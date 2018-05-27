@@ -12,8 +12,28 @@ class Board(object):
         self.boardSize = boardSize
         self.board = [[0 for x in range(boardSize)] for x in range(boardSize)]
         self.visible = [['.' for x in range(boardSize)] for x in range(boardSize)]
-        self.totalMines = boardSize + 1
-        self.mines = set()
+        self.minesTotal = boardSize + 1
+        self.mineLocations = set()
+        self.minesFound = 0
+        self.safeSquaresTotal = boardSize*boardSize - self.minesTotal
+
+    def findSize(self):
+        return self.boardSize
+
+    def findMinesTotal(self):
+        return self.minesTotal
+
+    def findMinesLeft(self):
+        return self.minesTotal - self.minesFound
+
+    def findUnclicked(self):
+        clicked = 0
+        for row in self.visible:
+            clicked += row.count('.')
+        return clicked
+
+    def findSafeSquares(self):
+        return self.safeSquaresTotal
 
     # Returns set with coordinates of all the neighbours of the coordinate
     def findNeighbours(self, i, j):
@@ -34,23 +54,23 @@ class Board(object):
     # Creates the mines and adds them to the board
     def generateMines(self):
         # Place the mines
-        minesLeft = self.totalMines
+        minesLeft = self.minesTotal
         while minesLeft > 0:
             # Create a random coordinate
             i = random.randrange(self.boardSize)
             j = random.randrange(self.boardSize)
             # If it hasn't already been added, add it
-            if (i,j) not in self.mines:
-                self.mines.add((i,j))
+            if (i,j) not in self.mineLocations:
+                self.mineLocations.add((i,j))
                 minesLeft -= 1
         # Marks the mines on the board
-        for location in self.mines:
+        for location in self.mineLocations:
             self.board[location[0]][location[1]] = 'X'
         # The mines have been placed
 
     # Figures out all the numbers
     def populate(self):
-        for mineLocation in self.mines:
+        for mineLocation in self.mineLocations:
             # Find the neighbours of every mine
             neighbours = self.findNeighbours(mineLocation[0],mineLocation[1])
             # For every neighbour, if it isn't a mine, add one to its value
@@ -66,13 +86,17 @@ class Board(object):
         self.populate()
 
     # Returns true if spot has not been clicked
-    def checkMove(self, i, j):
+    def checkUnclicked(self, i, j):
         return self.visible[i][j] == '.'
+
+    # Returns true if spot has been marked
+    def checkMarked(self, i, j):
+        return self.visible[i][j] == '!'
 
     # Clicking a spot the user believes to be free
     def click(self, i, j):
         successful = True
-        if self.checkMove(i,j):
+        if self.checkUnclicked(i,j):
             self.visible[i][j] = self.board[i][j]
             if self.board[i][j] == 'X':
                 # Clicked a mine
@@ -88,15 +112,17 @@ class Board(object):
     # Marking the site of a mine
     def mark(self, i, j):
         self.visible[i][j] = '!'
+        self.minesFound += 1
 
     # Unmark a previously marked square
     def unMark(self, i, j):
         assert(self.visible[i][j] == '!')
         self.visible[i][j] = '.'
+        self.minesFound -= 1
 
     # For debugging purposes, prints the full board
     def printBoard(self):
-        alphabet = [chr(x) for x in range(97,97+self.boardSize)]
+        alphabet = [chr(x) for x in range(65,65+self.boardSize)]
         alphabet = " ".join(alphabet)
         print("  " + alphabet)
         for i in range(self.boardSize):
@@ -106,7 +132,7 @@ class Board(object):
 
     # Prints what's visible to the player
     def printState(self):
-        alphabet = [chr(x) for x in range(97,97+self.boardSize)]
+        alphabet = [chr(x) for x in range(65,65+self.boardSize)]
         alphabet = " ".join(alphabet)
         print("  " + alphabet)
         for i in range(self.boardSize):
@@ -114,26 +140,7 @@ class Board(object):
             print(str(i)+ " " + row)
         print
 
-
-b = Board(9)
-b.createGame()
-b.printBoard()
-b.printState()
-print("Mark 5, 8")
-b.mark(5,8)
-b.printState()
-if b.checkMove(5,8):
-    print("Click 5, 8")
-    b.click(5,8)
-    b.printState()
-if b.checkMove(4,8):
-    print("Click 4, 8")
-    b.click(4,8)
-    b.printState()
-if b.checkMove(3,8):
-    print("Mark 3, 8")
-    b.mark(3,8)
-    b.printState()
-print("Unmark 5, 8")
-b.unMark(5,8)
-b.printState()
+def test():
+    b = Board(4)
+    b.createGame()
+    print(b.findUnclicked())
