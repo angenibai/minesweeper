@@ -2,7 +2,7 @@ from board import Board
 
 def checkInput(board, action, i, j):
     size = board.findSize()
-    if action not in ('C', 'M', 'U'):
+    if action not in ('click', 'flag', 'unflag'):
         print("Invalid action. Please try again")
         return False
     if i < 0 or i >= size or j < 0 or j >= size:
@@ -27,27 +27,28 @@ while board.findUnclicked() > board.findMinesLeft():
     print
     print(str(board.findMinesLeft()) + " mines left.")
     board.printState()
-    print("Action codes: ")
-    print("   Click: C")
-    print("   Mark: M")
-    print("   Unmark: U")
+    print("Actions: ")
+    print("   Click")
+    print("   Flag")
+    print("   Unflag")
     print("Specify square in format: letter number")
-    print("   eg. Click square E6: C E 6")
-    print("   eg. Mark square C0: M C 0")
+    print("   eg. Click square E6: Click E 6")
+    print("   eg. Mark square C0: Flag C 0")
     print
 
     rawInput = raw_input("Make your move: ")
     action, j, i = rawInput.strip().split(" ")
-    j = ord(j) - 65
+    action = action.lower()
+    j = ord(j.upper()) - 65
     i = int(i)
     if checkInput(board, action, i, j):
-        if action == 'C':
+        if action == "click":
             if board.checkUnclicked(i, j):
                 safe = board.click(i,j)
             else:
                 print
                 print("You are trying to click a square that has already been clicked")
-        elif action == 'M':
+        elif action == "flag":
             if board.findMinesLeft < 1:
                 print("You have already marked all the mines that you can.")
             elif board.checkUnclicked(i,j):
@@ -55,7 +56,7 @@ while board.findUnclicked() > board.findMinesLeft():
             else:
                 print
                 print("You are trying to mark a square that has already been clicked")
-        elif action == 'U':
+        elif action == "unflag":
             if board.checkMarked(i,j):
                 board.unMark(i,j)
             else:
