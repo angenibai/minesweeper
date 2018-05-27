@@ -33,7 +33,7 @@ while board.findUnclicked() > board.findMinesLeft():
     print("   Unflag")
     print("Specify square in format: letter number")
     print("   eg. Click square E6: Click E 6")
-    print("   eg. Mark square C0: Flag C 0")
+    print("   eg. Flag square C0: Flag C 0")
     print
 
     rawInput = raw_input("Make your move: ")
