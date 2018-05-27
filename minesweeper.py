@@ -20,7 +20,7 @@ while True:
 print
 board = Board(size)
 board.createGame()
-board.printBoard()
+#board.printBoard()
 safe = True
 
 while board.findUnclicked() > board.findMinesLeft():
