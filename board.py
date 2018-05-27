@@ -122,9 +122,10 @@ class Board(object):
 
     # For debugging purposes, prints the full board
     def printBoard(self):
-        alphabet = [chr(x) for x in range(65,65+self.boardSize)]
+        alphabet = [chr(x) for x in range(97,97+self.boardSize)]
         alphabet = " ".join(alphabet)
-        print("  " + alphabet)
+        print("    " + alphabet)
+        print("    " + " ".join('-' for i in range(self.boardSize)))
         for i in range(self.boardSize):
             row = " ".join(str(x) for x in self.board[i])
             print(str(i)+ " " + row)
@@ -134,10 +135,11 @@ class Board(object):
     def printState(self):
         alphabet = [chr(x) for x in range(65,65+self.boardSize)]
         alphabet = " ".join(alphabet)
-        print("  " + alphabet)
+        print("    " + alphabet)
+        print("    " + " ".join('-' for i in range(self.boardSize)))
         for i in range(self.boardSize):
             row = " ".join(str(x) for x in self.visible[i])
-            print(str(i)+ " " + row)
+            print(str(i)+ " | " + row)
         print
 
 def test():
