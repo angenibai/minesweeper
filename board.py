@@ -91,7 +91,7 @@ class Board(object):
 
     # Returns true if spot has been marked
     def checkMarked(self, i, j):
-        return self.visible[i][j] == '!'
+        return self.visible[i][j] == 'F'
 
     # Clicking a spot the user believes to be free
     def click(self, i, j):
@@ -111,12 +111,12 @@ class Board(object):
 
     # Marking the site of a mine
     def mark(self, i, j):
-        self.visible[i][j] = '!'
+        self.visible[i][j] = 'F'
         self.minesFound += 1
 
     # Unmark a previously marked square
     def unMark(self, i, j):
-        assert(self.visible[i][j] == '!')
+        assert(self.visible[i][j] == 'F')
         self.visible[i][j] = '.'
         self.minesFound -= 1
 
