@@ -13,7 +13,7 @@ def checkInput(board, action, i, j):
 
 while True:
     size = int(input("How big would you like the board to be? "))
-    if size > 100:
+    if size > 26:
         print("Woah that's a bit too big.")
     else:
         break
