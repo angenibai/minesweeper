@@ -1,3 +1,11 @@
+'''
+Here's the code that dictates how the game
+gets run and is interacted with.
+Run this in Python to play.
+
+Coded by Angeni Bai
+'''
+
 from board import Board
 
 def checkInput(board, action, i, j):
@@ -24,6 +32,7 @@ board.createGame()
 safe = True
 
 while board.findUnclicked() > board.findMinesLeft():
+    # Preamble to help people know what to do
     print
     print(str(board.findMinesLeft()) + " mines left.")
     board.printState()
@@ -36,18 +45,21 @@ while board.findUnclicked() > board.findMinesLeft():
     print("   eg. Flag square C0: Flag C 0")
     print
 
+    # Collect user input
     rawInput = raw_input("Make your move: ")
     action, j, i = rawInput.strip().split(" ")
     action = action.lower()
     j = ord(j.upper()) - 65
     i = int(i)
     if checkInput(board, action, i, j):
+        # When user tries to click a square
         if action == "click":
             if board.checkUnclicked(i, j):
                 safe = board.click(i,j)
             else:
                 print
                 print("You are trying to click a square that has already been clicked")
+        # When user tries to flag a square
         elif action == "flag":
             if board.findMinesLeft < 1:
                 print("You have already marked all the mines that you can.")
@@ -56,12 +68,14 @@ while board.findUnclicked() > board.findMinesLeft():
             else:
                 print
                 print("You are trying to mark a square that has already been clicked")
+        # When user tries to unflag a square
         elif action == "unflag":
             if board.checkMarked(i,j):
                 board.unMark(i,j)
             else:
                 print
                 print("You are trying to unmark a square that hasn't been marked")
+    # Checking if a mine was unearthed
     if not safe:
         break
 
