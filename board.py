@@ -1,3 +1,12 @@
+'''
+Here's the code that sets up the Board class
+and basically is the functioning logic that
+generates all the mines.
+
+Coded by Angeni Bai
+'''
+
+
 import random
 
 class Board(object):
