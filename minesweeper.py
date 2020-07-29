@@ -46,7 +46,7 @@ while board.findUnclicked() > board.findMinesLeft():
     print
 
     # Collect user input
-    rawInput = raw_input("Make your move: ")
+    rawInput = input("Make your move: ")
     action, j, i = rawInput.strip().split(" ")
     action = action.lower()
     j = ord(j.upper()) - 65
@@ -61,7 +61,7 @@ while board.findUnclicked() > board.findMinesLeft():
                 print("You are trying to click a square that has already been clicked")
         # When user tries to flag a square
         elif action == "flag":
-            if board.findMinesLeft < 1:
+            if board.findMinesLeft() < 1:
                 print("You have already marked all the mines that you can.")
             elif board.checkUnclicked(i,j):
                 board.mark(i,j)
